@@ -1,22 +1,64 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+<script>
+  const cursor = document.getElementById("cursor");
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+  if (cursor) {
+    document.addEventListener("mousemove", (e: MouseEvent) => {
+      requestAnimationFrame(() => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+      });
+    });
+
+    document.addEventListener("click", () => {
+      cursor.style.transform = "scale(0.7)";
+      setTimeout(() => {
+        cursor.style.transform = "scale(1)";
+      }, 100);
+    });
+  }
+</script>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Erland Gustavson Påsse</title>
+  </head>
+  <body
+    class="min-h-screen bg-stone-900 dot-pattern overflow-hidden before:content-[''] before:fixed before:inset-[-100px] before:bg-[radial-gradient(circle,rgba(255,255,255,0.3)_1px,transparent_1px)] before:bg-[length:24px_24px] before:animate-[move_8s_ease-in-out_infinite_alternate] before:-z-10"
+  >
+    <div
+      id="cursor"
+      class="fixed size-3 bg-white/75 rounded-full transition-all duration-200 ease-out mix-blend-difference"
+    >
+    </div>
+    <slot class="z-10" />
+  </body>
+
+  <style is:global>
+    @font-face {
+      font-family: "Outfit";
+      src: url("/fonts/Outfit-VariableFont_wght.ttf") format("truetype");
+      font-weight: 100 900;
+      font-stretch: 50% 150%;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      cursor: none;
+      font-family: "Outfit", system-ui, sans-serif;
+    }
+
+    @keyframes move {
+      from {
+        transform: translate(0, 0);
+      }
+      to {
+        transform: translate(-40px, -40px);
+      }
+    }
+  </style>
+</html>
