@@ -1,0 +1,19 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <div class="h-full flex flex-col items-center justify-center">
+    <PageHeader text="Filmer" />
+    <iframe
+      width="560"
+      height="315"
+      src="https://www.youtube.com/embed/cpp8qazFSZA?si=yIBQUPNXh6iqMi3k"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen></iframe>
+  </div>
+</Layout>
