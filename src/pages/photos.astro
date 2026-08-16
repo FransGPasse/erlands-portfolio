@@ -25,7 +25,7 @@ const bentoSpans = [
       <PageHeader text="Foto" />
 
       <div
-        class="flex gap-2"
+        class="flex gap-1"
         role="group"
         aria-label="Visa som"
       >
@@ -33,17 +33,21 @@ const bentoSpans = [
           type="button"
           data-view-btn="bento"
           aria-pressed="true"
-          class="view-btn text-slate-100 transition-all duration-300 ease-in-out p-2 text-lg font-[500] aria-pressed:font-[800]"
+          aria-label="Bento"
+          title="Bento"
+          class="view-btn text-slate-100 transition-all duration-300 ease-in-out p-2 text-2xl"
         >
-          Bento
+          <i class="ph ph-squares-four" aria-hidden="true"></i>
         </button>
         <button
           type="button"
           data-view-btn="carousel"
           aria-pressed="false"
-          class="view-btn text-slate-100/60 transition-all duration-300 ease-in-out p-2 text-lg font-[500] aria-pressed:font-[800] aria-pressed:text-slate-100"
+          aria-label="Karusell"
+          title="Karusell"
+          class="view-btn text-slate-100/60 transition-all duration-300 ease-in-out p-2 text-2xl aria-pressed:text-slate-100"
         >
-          Karusell
+          <i class="ph ph-slideshow" aria-hidden="true"></i>
         </button>
       </div>
 
@@ -93,10 +97,10 @@ const bentoSpans = [
             <button
               type="button"
               id="carousel-prev"
-              class="text-slate-100 text-lg p-2 transition-opacity duration-300 hover:opacity-70"
+              class="text-slate-100 text-2xl p-2 transition-opacity duration-300 hover:opacity-70"
               aria-label="Föregående foto"
             >
-              ←
+              <i class="ph ph-caret-left" aria-hidden="true"></i>
             </button>
             <p
               id="carousel-counter"
@@ -107,10 +111,10 @@ const bentoSpans = [
             <button
               type="button"
               id="carousel-next"
-              class="text-slate-100 text-lg p-2 transition-opacity duration-300 hover:opacity-70"
+              class="text-slate-100 text-2xl p-2 transition-opacity duration-300 hover:opacity-70"
               aria-label="Nästa foto"
             >
-              →
+              <i class="ph ph-caret-right" aria-hidden="true"></i>
             </button>
           </div>
         </div>

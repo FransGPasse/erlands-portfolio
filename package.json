@@ -2,6 +2,7 @@
   "name": "erlands-portfolio",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -9,10 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@phosphor-icons/web": "^2.1.2",
     "tailwindcss": "^3.4.19"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@astrojs/tailwind": "^6.0.2",
-    "astro": "^5.18.2"
+    "astro": "^5.18.2",
+    "typescript": "^5.7.2"
   }
 }

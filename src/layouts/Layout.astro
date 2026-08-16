@@ -1,54 +1,97 @@
-<script>
-  const cursor = document.getElementById("cursor");
+---
+import "@phosphor-icons/web/regular";
 
-  if (cursor) {
-    document.addEventListener("mousemove", (e: MouseEvent) => {
-      requestAnimationFrame(() => {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
-      });
-    });
-
-    document.addEventListener("click", () => {
-      cursor.style.transform = "scale(0.7)";
-      setTimeout(() => {
-        cursor.style.transform = "scale(1)";
-      }, 100);
-    });
-  }
-</script>
+const base = import.meta.env.BASE_URL;
+const outfitFont = `url(${base}fonts/Outfit-VariableFont_wght.ttf)`;
+---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
     <title>Erland Gustavson Påsse</title>
   </head>
   <body
-    class="min-h-screen bg-gradient-to-br from-blue-600 to-emerald-800 before:content-[''] before:fixed before:inset-[-100px] before:bg-[radial-gradient(circle,rgba(255,255,255,0.3)_1px,transparent_1px)] before:bg-[length:60px_60px] before:animate-[move_8s_ease-in-out_infinite_alternate] before:-z-10"
+    class="min-h-screen bg-gradient-to-br from-slate-400 to-stone-500 before:content-[''] before:fixed before:inset-[-100px] before:bg-[radial-gradient(circle,rgba(255,255,255,0.3)_1px,transparent_1px)] before:bg-[length:60px_60px] before:animate-[move_8s_ease-in-out_infinite_alternate] before:-z-10"
   >
     <div
       id="cursor"
-      class="fixed size-3 bg-white/75 rounded-full transition-all duration-200 ease-out mix-blend-difference"
+      class="pointer-events-none fixed left-0 top-0 z-[9999] size-3 rounded-full bg-white/75 opacity-0 mix-blend-difference transition-[left,top,opacity,transform] duration-100 ease-out"
+      style="transform: translate(-50%, -50%)"
+      aria-hidden="true"
     >
     </div>
-    <slot class="z-10" />
+    <slot />
   </body>
 
-  <style is:global>
+  <script>
+    const cursor = document.getElementById("cursor");
+
+    if (cursor) {
+      let isReady = false;
+      let pressTimeout: ReturnType<typeof setTimeout> | undefined;
+
+      const setScale = (scale: number) => {
+        cursor.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      };
+
+      const placeCursor = (x: number, y: number) => {
+        cursor.style.left = `${x}px`;
+        cursor.style.top = `${y}px`;
+      };
+
+      document.addEventListener("mousemove", (e: MouseEvent) => {
+        if (!isReady) {
+          cursor.style.transition = "none";
+          placeCursor(e.clientX, e.clientY);
+          // Force layout so the next frame can transition from the real position.
+          void cursor.offsetWidth;
+          cursor.style.transition = "";
+          cursor.style.opacity = "1";
+          isReady = true;
+          return;
+        }
+
+        requestAnimationFrame(() => {
+          placeCursor(e.clientX, e.clientY);
+        });
+      });
+
+      document.documentElement.addEventListener("mouseleave", () => {
+        if (isReady) cursor.style.opacity = "0";
+      });
+
+      document.documentElement.addEventListener("mouseenter", () => {
+        if (isReady) cursor.style.opacity = "1";
+      });
+
+      document.addEventListener("click", () => {
+        if (pressTimeout) clearTimeout(pressTimeout);
+        setScale(0.7);
+        pressTimeout = setTimeout(() => setScale(1), 100);
+      });
+    }
+  </script>
+
+  <style is:global define:vars={{ outfitFont }}>
     @font-face {
       font-family: "Outfit";
-      src: url("/fonts/Outfit-VariableFont_wght.ttf") format("truetype");
+      src: var(--outfitFont) format("truetype");
       font-weight: 100 900;
       font-style: normal;
       font-display: swap;
     }
 
-    * {
-      cursor: none;
+    html {
       font-family: "Outfit", system-ui, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      cursor: none !important;
     }
 
     @keyframes move {
