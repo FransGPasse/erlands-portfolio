@@ -1,0 +1,165 @@
+---
+import type { Photo } from "../data/photos";
+
+type Props = {
+  photos: Photo[];
+};
+
+const { photos } = Astro.props as Props;
+---
+
+<div
+  id="carousel-view"
+  class="fixed inset-0 z-40 hidden"
+  data-carousel
+  hidden
+  role="dialog"
+  aria-modal="true"
+  aria-label="Photo viewer"
+>
+  <div
+    class="absolute inset-0 bg-neutral-950/95 backdrop-blur-md"
+    data-carousel-backdrop
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative flex h-full flex-col">
+    <header
+      class="flex shrink-0 items-center justify-between px-5 py-5 sm:px-8 sm:py-6"
+    >
+      <button
+        type="button"
+        data-carousel-close
+        class="inline-flex items-center gap-2 p-2 text-slate-100/80 transition-opacity duration-300 hover:text-slate-100 hover:opacity-100"
+        aria-label="Back to grid"
+      >
+        <i class="ph ph-squares-four text-2xl" aria-hidden="true"></i>
+        <span class="hidden text-sm sm:inline">Grid</span>
+      </button>
+
+      <p
+        data-carousel-counter
+        class="text-sm tabular-nums text-slate-100/70"
+      >
+        1 / {photos.length}
+      </p>
+
+      <button
+        type="button"
+        data-carousel-dismiss
+        class="p-2 text-2xl text-slate-100/80 transition-opacity duration-300 hover:text-slate-100 hover:opacity-100"
+        aria-label="Close viewer"
+      >
+        <i class="ph ph-x" aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <div class="relative min-h-0 flex-1 px-3 sm:px-10">
+      <button
+        type="button"
+        data-carousel-prev
+        class="absolute left-1 top-1/2 z-10 -translate-y-1/2 p-3 text-3xl text-slate-100/70 transition-all duration-300 hover:scale-110 hover:text-slate-100 sm:left-4 sm:p-4"
+        aria-label="Previous photo"
+      >
+        <i class="ph ph-caret-left" aria-hidden="true"></i>
+      </button>
+
+      <div class="relative mx-auto h-full max-w-[min(100%,88rem)]">
+        {
+          photos.map((photo, index) => (
+            <img
+              data-carousel-slide
+              data-photo-index={index}
+              src={photo.src}
+              alt={photo.alt}
+              class:list={[
+                "absolute inset-0 m-auto max-h-full max-w-full object-contain transition-[opacity,transform] duration-700 ease-smooth",
+                index === 0
+                  ? "opacity-100"
+                  : "pointer-events-none opacity-0",
+              ]}
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+            />
+          ))
+        }
+      </div>
+
+      <button
+        type="button"
+        data-carousel-next
+        class="absolute right-1 top-1/2 z-10 -translate-y-1/2 p-3 text-3xl text-slate-100/70 transition-all duration-300 hover:scale-110 hover:text-slate-100 sm:right-4 sm:p-4"
+        aria-label="Next photo"
+      >
+        <i class="ph ph-caret-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-carousel]");
+
+  if (root) {
+    const slides = root.querySelectorAll<HTMLImageElement>("[data-carousel-slide]");
+    const counter = root.querySelector("[data-carousel-counter]");
+    const prevBtn = root.querySelector("[data-carousel-prev]");
+    const nextBtn = root.querySelector("[data-carousel-next]");
+    const closeBtn = root.querySelector("[data-carousel-close]");
+    const dismissBtn = root.querySelector("[data-carousel-dismiss]");
+    const backdrop = root.querySelector("[data-carousel-backdrop]");
+
+    let activeIndex = 0;
+
+    function requestClose() {
+      document.dispatchEvent(new CustomEvent("gallery:request-close"));
+    }
+
+    function showSlide(index: number) {
+      if (slides.length === 0) return;
+
+      activeIndex = (index + slides.length) % slides.length;
+
+      slides.forEach((slide, i) => {
+        const isActive = i === activeIndex;
+        slide.classList.toggle("opacity-100", isActive);
+        slide.classList.toggle("opacity-0", !isActive);
+        slide.classList.toggle("pointer-events-none", !isActive);
+      });
+
+      if (counter) {
+        counter.textContent = `${activeIndex + 1} / ${slides.length}`;
+      }
+
+      document.dispatchEvent(
+        new CustomEvent("carousel:index-changed", {
+          detail: { index: activeIndex },
+        }),
+      );
+    }
+
+    document.addEventListener("carousel:go-to", (event) => {
+      const { index } = (event as CustomEvent<{ index: number }>).detail;
+      showSlide(index);
+    });
+
+    prevBtn?.addEventListener("click", () => showSlide(activeIndex - 1));
+    nextBtn?.addEventListener("click", () => showSlide(activeIndex + 1));
+    closeBtn?.addEventListener("click", requestClose);
+    dismissBtn?.addEventListener("click", requestClose);
+    backdrop?.addEventListener("click", requestClose);
+
+    document.addEventListener("keydown", (event) => {
+      if (root.hidden || root.classList.contains("hidden")) return;
+
+      if (event.key === "Escape") {
+        requestClose();
+        return;
+      }
+
+      if (event.key === "ArrowLeft") showSlide(activeIndex - 1);
+      if (event.key === "ArrowRight") showSlide(activeIndex + 1);
+    });
+  }
+</script>

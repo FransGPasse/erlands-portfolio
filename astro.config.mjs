@@ -8,5 +8,5 @@ export default defineConfig({
   site: "https://fransgpasse.github.io",
   base: "/erlands-portfolio",
   trailingSlash: "always",
-  integrations: [tailwind()],
+  integrations: [tailwind({ applyBaseStyles: false })],
 });

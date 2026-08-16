@@ -1,0 +1,234 @@
+---
+import type { Photo } from "../data/photos";
+import BentoGrid from "./BentoGrid.astro";
+import PhotoCarousel from "./PhotoCarousel.astro";
+
+type Props = {
+  photos: Photo[];
+};
+
+const { photos } = Astro.props as Props;
+---
+
+<div
+  class="flex w-full flex-col items-center gap-6"
+  data-photo-gallery
+  data-photo-count={photos.length}
+>
+  <div
+    class="flex gap-1"
+    role="group"
+    aria-label="View as"
+    data-gallery-toggle
+  >
+    <button
+      type="button"
+      data-view-btn="bento"
+      aria-pressed="true"
+      aria-label="Bento grid"
+      title="Bento grid"
+      class="view-btn p-2 text-2xl text-slate-100 transition-all duration-300 ease-in-out"
+    >
+      <i class="ph ph-squares-four" aria-hidden="true"></i>
+    </button>
+    <button
+      type="button"
+      data-view-btn="carousel"
+      aria-pressed="false"
+      aria-label="Carousel"
+      title="Carousel"
+      class="view-btn p-2 text-2xl text-slate-100/60 transition-all duration-300 ease-in-out aria-pressed:text-slate-100"
+    >
+      <i class="ph ph-slideshow" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <BentoGrid photos={photos} />
+  <PhotoCarousel photos={photos} />
+</div>
+
+<script>
+  import {
+    buildGridUrl,
+    buildPhotoHash,
+    parsePhotoHash,
+  } from "../lib/photoGalleryUrl";
+  import { scrollToPhotoIndex } from "../lib/photosScroll";
+
+  const gallery = document.querySelector<HTMLElement>("[data-photo-gallery]");
+  const viewButtons = document.querySelectorAll<HTMLButtonElement>("[data-view-btn]");
+  const bentoView = document.getElementById("bento-view");
+  const carouselView = document.getElementById("carousel-view");
+  const scrollRoot = document.getElementById("photos-scroll");
+  const photoCount = Number(gallery?.dataset.photoCount ?? "0");
+
+  let lastCarouselIndex = 0;
+  let lastSyncedUrlIndex: number | null = null;
+  let isHandlingPopstate = false;
+  let carouselPushedHistory = false;
+
+  function lockPageScroll() {
+    scrollRoot?.classList.add("overflow-hidden");
+    document.documentElement.classList.add("overflow-hidden");
+  }
+
+  function unlockPageScroll() {
+    scrollRoot?.classList.remove("overflow-hidden");
+    document.documentElement.classList.remove("overflow-hidden");
+  }
+
+  function isValidIndex(index: number): boolean {
+    return index >= 0 && index < photoCount;
+  }
+
+  function isCarouselOpen(): boolean {
+    return carouselView !== null && !carouselView.hidden;
+  }
+
+  function syncPhotoUrl(
+    index: number,
+    mode: "push" | "replace" = "replace",
+  ) {
+    const url = `${buildGridUrl()}${buildPhotoHash(index)}`;
+    const state = { view: "carousel", index };
+
+    if (mode === "push") {
+      history.pushState(state, "", url);
+      carouselPushedHistory = true;
+    } else {
+      history.replaceState(state, "", url);
+    }
+
+    lastSyncedUrlIndex = index;
+  }
+
+  function clearPhotoUrl() {
+    history.replaceState({ view: "bento" }, "", buildGridUrl());
+    lastSyncedUrlIndex = null;
+  }
+
+  function returnToGrid() {
+    setView("bento");
+    lastSyncedUrlIndex = null;
+    carouselPushedHistory = false;
+    scrollToPhotoIndex(lastCarouselIndex, scrollRoot);
+  }
+
+  function setView(view: "bento" | "carousel") {
+    viewButtons.forEach((btn) => {
+      const isActive = btn.dataset.viewBtn === view;
+      btn.setAttribute("aria-pressed", String(isActive));
+      btn.classList.toggle("text-slate-100", isActive);
+      btn.classList.toggle("text-slate-100/60", !isActive);
+    });
+
+    if (!bentoView || !carouselView) return;
+
+    const showBento = view === "bento";
+    bentoView.classList.toggle("hidden", !showBento);
+    carouselView.classList.toggle("hidden", showBento);
+    carouselView.hidden = showBento;
+
+    if (showBento) {
+      unlockPageScroll();
+    } else {
+      lockPageScroll();
+    }
+  }
+
+  function showCarouselAt(
+    index: number,
+    options?: { history?: "push" | "replace" | "none" },
+  ) {
+    if (!isValidIndex(index)) return;
+
+    const wasCarouselOpen = isCarouselOpen();
+
+    lastCarouselIndex = index;
+    document.dispatchEvent(
+      new CustomEvent("carousel:go-to", { detail: { index } }),
+    );
+    setView("carousel");
+
+    const historyMode =
+      options?.history ?? (wasCarouselOpen ? "replace" : "push");
+    if (historyMode === "none") return;
+    if (lastSyncedUrlIndex === index && historyMode !== "push") return;
+
+    syncPhotoUrl(index, historyMode);
+  }
+
+  function closeCarousel() {
+    if (parsePhotoHash() !== null && carouselPushedHistory) {
+      history.back();
+      return;
+    }
+
+    if (parsePhotoHash() !== null) {
+      clearPhotoUrl();
+    }
+
+    returnToGrid();
+  }
+
+  viewButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const view = btn.dataset.viewBtn;
+      if (view === "bento") {
+        closeCarousel();
+      } else if (view === "carousel") {
+        showCarouselAt(lastCarouselIndex);
+      }
+    });
+  });
+
+  document.addEventListener("gallery:open", (event) => {
+    const { index } = (event as CustomEvent<{ index: number }>).detail;
+    showCarouselAt(index, { history: "push" });
+  });
+
+  document.addEventListener("gallery:request-close", () => {
+    closeCarousel();
+  });
+
+  document.addEventListener("carousel:index-changed", (event) => {
+    const { index } = (event as CustomEvent<{ index: number }>).detail;
+    lastCarouselIndex = index;
+
+    if (isHandlingPopstate) return;
+    if (!isCarouselOpen()) return;
+    if (lastSyncedUrlIndex === index) return;
+
+    syncPhotoUrl(index, "replace");
+  });
+
+  window.addEventListener("popstate", () => {
+    isHandlingPopstate = true;
+
+    const index = parsePhotoHash();
+    if (index !== null && isValidIndex(index)) {
+      lastCarouselIndex = index;
+      lastSyncedUrlIndex = index;
+      document.dispatchEvent(
+        new CustomEvent("carousel:go-to", { detail: { index } }),
+      );
+      setView("carousel");
+    } else {
+      if (parsePhotoHash() !== null) {
+        clearPhotoUrl();
+      }
+      returnToGrid();
+    }
+
+    isHandlingPopstate = false;
+  });
+
+  const initialIndex = parsePhotoHash();
+  if (initialIndex !== null && isValidIndex(initialIndex)) {
+    requestAnimationFrame(() => {
+      showCarouselAt(initialIndex, { history: "replace" });
+    });
+  } else if (parsePhotoHash() !== null) {
+    clearPhotoUrl();
+  }
+</script>

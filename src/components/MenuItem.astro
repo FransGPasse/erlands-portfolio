@@ -1,0 +1,40 @@
+---
+import { withBase } from "../lib/withBase";
+
+type Props = {
+  href: string;
+  label: string;
+  icon: string;
+  index: number;
+};
+
+const { href, label, icon, index } = Astro.props as Props;
+
+const resolvedHref = href.startsWith("http") ? href : withBase(href);
+
+const menuItemDelays = [
+  "[animation-delay:0.12s]",
+  "[animation-delay:0.2s]",
+  "[animation-delay:0.28s]",
+];
+---
+
+<li
+  class:list={[
+    "opacity-0 group-[.is-open]/menu:animate-menu-item-in motion-reduce:group-[.is-open]/menu:animate-none motion-reduce:group-[.is-open]/menu:opacity-100",
+    menuItemDelays[index] ?? "[animation-delay:0.28s]",
+  ]}
+>
+  <a
+    href={resolvedHref}
+    class="group/link inline-flex items-center justify-center gap-3 px-6 py-3 text-center text-3xl font-[500] tracking-wide text-white transition-opacity duration-300 hover:opacity-80 sm:py-4 sm:text-4xl"
+  >
+    <i class:list={["ph", icon, "text-[0.9em] opacity-70"]} aria-hidden="true"
+    ></i>
+    <span
+      class="underline decoration-transparent decoration-1 underline-offset-[0.35em] transition-[text-decoration-color] duration-300 group-hover/link:decoration-current"
+    >
+      {label}
+    </span>
+  </a>
+</li>

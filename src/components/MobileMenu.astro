@@ -1,0 +1,95 @@
+---
+import { navLinks } from "../data/nav";
+import MenuItem from "./MenuItem.astro";
+import MenuToggle from "./MenuToggle.astro";
+
+const menuId = "site-menu";
+---
+
+<MenuToggle controls={menuId} />
+
+<div
+  id={menuId}
+  class="group/menu pointer-events-none fixed inset-0 z-40 md:hidden [[&.is-open]]:pointer-events-auto"
+  hidden
+  aria-hidden="true"
+>
+  <nav
+    class="flex size-full scale-[0.98] items-center justify-center bg-neutral-950 opacity-0 transition-[opacity,transform] duration-400 ease-smooth motion-reduce:scale-100 motion-reduce:transition-none group-[.is-open]/menu:scale-100 group-[.is-open]/menu:opacity-100"
+    aria-label="Main menu"
+  >
+    <ul class="flex flex-col items-center gap-2 sm:gap-3">
+      {
+        navLinks.map((link, index) => (
+          <MenuItem
+            href={link.href}
+            label={link.label}
+            icon={link.icon}
+            index={index}
+          />
+        ))
+      }
+    </ul>
+  </nav>
+</div>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("site-menu");
+
+  if (toggle && menu) {
+    let isOpen = false;
+    let closeTimer: ReturnType<typeof setTimeout> | undefined;
+    const CLOSE_MS = 400;
+
+    const setOpen = (open: boolean) => {
+      if (open === isOpen) return;
+      isOpen = open;
+
+      if (closeTimer !== undefined) {
+        clearTimeout(closeTimer);
+        closeTimer = undefined;
+      }
+
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      toggle.classList.toggle("is-open", open);
+      document.body.classList.toggle("overflow-hidden", open);
+      menu.setAttribute("aria-hidden", String(!open));
+
+      if (open) {
+        menu.hidden = false;
+        void menu.offsetWidth;
+        requestAnimationFrame(() => {
+          if (!isOpen) return;
+          menu.classList.add("is-open");
+        });
+        return;
+      }
+
+      menu.classList.remove("is-open");
+      closeTimer = setTimeout(() => {
+        if (!isOpen) menu.hidden = true;
+        closeTimer = undefined;
+      }, CLOSE_MS);
+    };
+
+    toggle.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setOpen(!isOpen);
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen) setOpen(false);
+    });
+
+    const desktopMq = window.matchMedia("(min-width: 768px)");
+    desktopMq.addEventListener("change", (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

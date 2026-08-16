@@ -1,12 +1,13 @@
 ---
 import "@phosphor-icons/web/regular";
 import { withBase } from "../lib/withBase";
+import "../styles/global.css";
 
 const outfitFont = `url(${withBase("fonts/Outfit-VariableFont_wght.ttf")})`;
 const faviconHref = withBase("favicon.svg");
 ---
 
-<html lang="en">
+<html lang="en" class="font-sans" style={`--font-outfit: ${outfitFont}`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -73,34 +74,4 @@ const faviconHref = withBase("favicon.svg");
       });
     }
   </script>
-
-  <style is:global define:vars={{ outfitFont }}>
-    @font-face {
-      font-family: "Outfit";
-      src: var(--outfitFont) format("truetype");
-      font-weight: 100 900;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    html {
-      font-family: "Outfit", system-ui, sans-serif;
-    }
-
-    *,
-    *::before,
-    *::after {
-      cursor: none !important;
-    }
-
-    /* Smooth variable-font weight hover (Outfit wght axis). */
-    .title-weight {
-      font-variation-settings: "wght" 500;
-      transition: font-variation-settings 300ms ease;
-    }
-
-    .title-weight:hover {
-      font-variation-settings: "wght" 800;
-    }
-  </style>
 </html>

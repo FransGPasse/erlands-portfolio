@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Outfit path is set on <html> via --font-outfit (see Layout.astro). */
+@font-face {
+  font-family: "Outfit";
+  src: var(--font-outfit) format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}

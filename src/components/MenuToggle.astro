@@ -1,0 +1,40 @@
+---
+type Props = {
+  controls: string;
+};
+
+const { controls } = Astro.props as Props;
+
+const menuIconLine =
+  "absolute left-0 block h-[1.5px] w-full rounded-full bg-current transition-[transform,opacity,top] duration-300 ease-smooth motion-reduce:transition-none";
+---
+
+<button
+  type="button"
+  id="menu-toggle"
+  class="group absolute right-5 top-5 z-50 flex size-11 items-center justify-center text-white transition-opacity duration-300 hover:opacity-70 active:scale-95 sm:right-8 sm:top-8 sm:size-12 md:hidden"
+  aria-expanded="false"
+  aria-controls={controls}
+  aria-label="Open menu"
+>
+  <span class="relative block h-3 w-[1.2rem]" aria-hidden="true">
+    <span
+      class:list={[
+        menuIconLine,
+        "top-0 group-[.is-open]:top-1/2 group-[.is-open]:-translate-y-1/2 group-[.is-open]:rotate-45",
+      ]}
+    ></span>
+    <span
+      class:list={[
+        menuIconLine,
+        "top-1/2 -translate-y-1/2 group-[.is-open]:opacity-0",
+      ]}
+    ></span>
+    <span
+      class:list={[
+        menuIconLine,
+        "top-full -translate-y-full group-[.is-open]:top-1/2 group-[.is-open]:-translate-y-1/2 group-[.is-open]:-rotate-45",
+      ]}
+    ></span>
+  </span>
+</button>
