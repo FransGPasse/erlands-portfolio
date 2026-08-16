@@ -46,10 +46,14 @@ const photos = getPhotos();
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
       restorePhotosScroll(scrollRoot);
+      document.dispatchEvent(new CustomEvent("photos:scroll-restored"));
     }
   });
 
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => restorePhotosScroll(scrollRoot));
+    requestAnimationFrame(() => {
+      restorePhotosScroll(scrollRoot);
+      document.dispatchEvent(new CustomEvent("photos:scroll-restored"));
+    });
   });
 </script>
