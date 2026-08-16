@@ -1,9 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Link from "../components/Link.astro";
-import MobileMenu from "../components/MobileMenu.astro";
+import MainNav from "../components/MainNav.astro";
 import Title from "../components/Title.astro";
-import { navLinks } from "../data/nav";
 import { withBase } from "../lib/withBase";
 
 const heroSrc = withBase("photos/landing-page-image.webp");
@@ -14,29 +12,18 @@ const heroSrc = withBase("photos/landing-page-image.webp");
     <img
       src={heroSrc}
       alt="Photo 32"
-      class="absolute inset-0 size-full object-cover object-center opacity-0 animate-hero-blur-fade motion-reduce:animate-none motion-reduce:opacity-100 motion-reduce:blur-none motion-reduce:scale-100"
+      class="absolute inset-0 z-0 size-full object-cover object-center opacity-0 animate-hero-blur-fade motion-reduce:animate-none motion-reduce:opacity-100 motion-reduce:blur-none motion-reduce:scale-100"
       fetchpriority="high"
     />
 
-    <header class="absolute inset-x-0 top-0 z-30 p-5 sm:p-8 md:p-10">
+    <header class="absolute inset-x-0 top-0 z-chrome p-5 sm:p-8 md:p-10">
       <Title
-        class="max-w-[10rem] text-left text-2xl leading-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)] opacity-0 animate-fade-slide-in sm:text-3xl md:text-4xl lg:text-5xl motion-reduce:animate-none motion-reduce:opacity-100 motion-reduce:blur-none motion-reduce:translate-y-0"
+        class="max-w-[10rem] text-left text-2xl leading-tight opacity-0 animate-fade-slide-in sm:text-3xl md:text-4xl lg:text-5xl motion-reduce:animate-none motion-reduce:opacity-100 motion-reduce:blur-none motion-reduce:translate-y-0"
       >
         Erland Gustavson Påsse
       </Title>
     </header>
 
-    <nav
-      class="absolute bottom-8 right-8 z-30 hidden md:bottom-10 md:right-10 md:flex md:flex-wrap md:items-center md:justify-end md:gap-2 lg:bottom-12 lg:right-12 lg:gap-3"
-      aria-label="Main menu"
-    >
-      {
-        navLinks.map((link) => (
-          <Link src={link.href} text={link.label} icon={link.icon} variant="nav" />
-        ))
-      }
-    </nav>
-
-    <MobileMenu />
+    <MainNav />
   </main>
 </Layout>

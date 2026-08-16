@@ -1,10 +1,10 @@
-export const PHOTO_HASH_PREFIX = "photo-";
+const PHOTO_HASH_PREFIX = "photo-";
 
 export function photoNumberFromIndex(index: number): number {
   return index + 1;
 }
 
-export function indexFromPhotoNumber(number: number): number {
+function indexFromPhotoNumber(number: number): number {
   return number - 1;
 }
 

@@ -1,0 +1,21 @@
+---
+type Props = {
+  class?: string;
+};
+
+const { class: className } = Astro.props as Props;
+---
+
+<div class:list={["relative", className]} data-nav-underline-root>
+  <span
+    class="nav-underline pointer-events-none absolute left-0 top-0 h-px w-0 bg-white opacity-0 transition-[transform,width,opacity] duration-300 ease-smooth motion-reduce:transition-none"
+    aria-hidden="true"
+  ></span>
+  <slot />
+</div>
+
+<script>
+  import { setupAllNavUnderlines } from "../lib/navUnderline";
+
+  setupAllNavUnderlines();
+</script>

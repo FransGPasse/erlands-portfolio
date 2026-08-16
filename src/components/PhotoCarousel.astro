@@ -10,7 +10,7 @@ const { photos } = Astro.props as Props;
 
 <div
   id="carousel-view"
-  class="fixed inset-0 z-40 hidden"
+  class="fixed inset-0 z-overlay hidden"
   data-carousel
   hidden
   role="dialog"
@@ -31,7 +31,7 @@ const { photos } = Astro.props as Props;
       <button
         type="button"
         data-carousel-close
-        class="inline-flex items-center gap-2 p-2 text-slate-100/80 transition-opacity duration-300 hover:text-slate-100 hover:opacity-100"
+        class="inline-flex items-center gap-1 p-2 opacity-80 transition-opacity duration-300 hover:opacity-100"
         aria-label="Back to grid"
       >
         <i class="ph ph-squares-four text-2xl" aria-hidden="true"></i>
@@ -40,7 +40,7 @@ const { photos } = Astro.props as Props;
 
       <p
         data-carousel-counter
-        class="text-sm tabular-nums text-slate-100/70"
+        class="text-sm tabular-nums opacity-70"
       >
         1 / {photos.length}
       </p>
@@ -48,7 +48,7 @@ const { photos } = Astro.props as Props;
       <button
         type="button"
         data-carousel-dismiss
-        class="p-2 text-2xl text-slate-100/80 transition-opacity duration-300 hover:text-slate-100 hover:opacity-100"
+        class="p-2 text-2xl opacity-80 transition-opacity duration-300 hover:opacity-100"
         aria-label="Close viewer"
       >
         <i class="ph ph-x" aria-hidden="true"></i>
@@ -59,7 +59,7 @@ const { photos } = Astro.props as Props;
       <button
         type="button"
         data-carousel-prev
-        class="absolute left-1 top-1/2 z-10 -translate-y-1/2 p-3 text-3xl text-slate-100/70 transition-all duration-300 hover:scale-110 hover:text-slate-100 sm:left-4 sm:p-4"
+        class="absolute left-1 top-1/2 z-1 -translate-y-1/2 p-3 text-3xl opacity-70 transition-all duration-300 hover:scale-110 hover:opacity-100 sm:left-4 sm:p-4"
         aria-label="Previous photo"
       >
         <i class="ph ph-caret-left" aria-hidden="true"></i>
@@ -89,7 +89,7 @@ const { photos } = Astro.props as Props;
       <button
         type="button"
         data-carousel-next
-        class="absolute right-1 top-1/2 z-10 -translate-y-1/2 p-3 text-3xl text-slate-100/70 transition-all duration-300 hover:scale-110 hover:text-slate-100 sm:right-4 sm:p-4"
+        class="absolute right-1 top-1/2 z-1 -translate-y-1/2 p-3 text-3xl opacity-70 transition-all duration-300 hover:scale-110 hover:opacity-100 sm:right-4 sm:p-4"
         aria-label="Next photo"
       >
         <i class="ph ph-caret-right" aria-hidden="true"></i>

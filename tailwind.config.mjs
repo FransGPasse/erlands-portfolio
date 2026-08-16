@@ -53,6 +53,12 @@ export default {
       transitionTimingFunction: {
         smooth: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
+      zIndex: {
+        chrome: "10",
+        overlay: "20",
+        toggle: "30",
+        cursor: "9999",
+      },
     },
   },
   plugins: [],

@@ -1,16 +1,37 @@
 ---
 import { navLinks } from "../data/nav";
-import MenuItem from "./MenuItem.astro";
 import MenuToggle from "./MenuToggle.astro";
+import NavLink from "./NavLink.astro";
+import NavUnderline from "./NavUnderline.astro";
 
 const menuId = "site-menu";
 ---
+
+<nav
+  class="absolute bottom-8 right-8 z-chrome hidden md:bottom-10 md:right-10 md:block lg:bottom-12 lg:right-12"
+  aria-label="Main menu"
+>
+  <NavUnderline
+    class="flex flex-wrap items-center justify-end gap-2 lg:gap-3"
+  >
+    {
+      navLinks.map((link) => (
+        <NavLink
+          href={link.href}
+          label={link.label}
+          icon={link.icon}
+          layout="desktop"
+        />
+      ))
+    }
+  </NavUnderline>
+</nav>
 
 <MenuToggle controls={menuId} />
 
 <div
   id={menuId}
-  class="mobile-menu group/menu fixed inset-0 z-40 md:hidden"
+  class="mobile-menu group/menu fixed inset-0 z-overlay md:hidden"
   hidden
   aria-hidden="true"
 >
@@ -18,18 +39,21 @@ const menuId = "site-menu";
     class="mobile-menu__nav flex size-full scale-[0.98] items-center justify-center bg-neutral-950 opacity-0 transition-[opacity,transform] duration-400 ease-smooth motion-reduce:scale-100 motion-reduce:transition-none group-[.is-open]/menu:scale-100 group-[.is-open]/menu:opacity-100"
     aria-label="Main menu"
   >
-    <ul class="flex flex-col items-center gap-2 sm:gap-3">
-      {
-        navLinks.map((link, index) => (
-          <MenuItem
-            href={link.href}
-            label={link.label}
-            icon={link.icon}
-            index={index}
-          />
-        ))
-      }
-    </ul>
+    <NavUnderline>
+      <ul class="flex flex-col items-center gap-2 sm:gap-3">
+        {
+          navLinks.map((link, index) => (
+            <NavLink
+              href={link.href}
+              label={link.label}
+              icon={link.icon}
+              layout="mobile"
+              index={index}
+            />
+          ))
+        }
+      </ul>
+    </NavUnderline>
   </nav>
 </div>
 

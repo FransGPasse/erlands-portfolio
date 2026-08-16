@@ -1,17 +1,16 @@
 ---
 import { withBase } from "../lib/withBase";
+import { TEXT_COLOR } from "../lib/theme";
 import "../styles/global.css";
 
 const outfitFontFile = withBase("fonts/Outfit-VariableFont_wght.ttf");
 const phosphorFontFile = withBase("fonts/Phosphor.woff2");
-const faviconHref = withBase("favicon.svg");
 ---
 
 <html lang="en" class="font-sans">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href={faviconHref} />
     <link
       rel="preload"
       href={phosphorFontFile}
@@ -29,19 +28,19 @@ const faviconHref = withBase("favicon.svg");
     <meta name="generator" content={Astro.generator} />
     <title>Erland Gustavson Påsse</title>
   </head>
-  <body class="min-h-screen bg-neutral-950">
+  <body class:list={["min-h-screen", "bg-neutral-950", TEXT_COLOR]}>
     <style
       is:inline
       set:html={`@font-face{font-family:"Outfit";src:url("${outfitFontFile}") format("truetype");font-weight:100 900;font-style:normal;font-display:block;}@font-face{font-family:"Phosphor";src:url("${phosphorFontFile}") format("woff2");font-weight:normal;font-style:normal;font-display:block;}`}
     />
+    <slot />
     <div
       id="cursor"
-      class="custom-cursor pointer-events-none fixed left-0 top-0 z-[9999] size-3 rounded-full bg-white/75 opacity-0 mix-blend-difference transition-[left,top,opacity,transform] duration-100 ease-out"
+      class="custom-cursor pointer-events-none fixed left-0 top-0 z-cursor size-3 rounded-full bg-white/75 opacity-0 mix-blend-difference transition-[left,top,opacity,transform] duration-100 ease-out"
       style="transform: translate(-50%, -50%)"
       aria-hidden="true"
     >
     </div>
-    <slot />
   </body>
 
   <script>
@@ -105,6 +104,7 @@ const faviconHref = withBase("favicon.svg");
   @media (hover: hover) and (pointer: fine) {
     .custom-cursor {
       display: block;
+      z-index: 9999;
     }
   }
 </style>

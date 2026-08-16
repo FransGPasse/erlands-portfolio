@@ -20,7 +20,7 @@ const contacts = [
 ---
 
 <Layout>
-  <div class="relative z-10 min-h-dvh overflow-y-auto">
+  <div class="min-h-dvh overflow-y-auto">
     <div class="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-6 py-10 sm:px-10 sm:py-14 md:py-16">
       <div class="mb-12 md:mb-16">
         <Link src="/" text="Home" icon="ph-house" />
@@ -31,19 +31,19 @@ const contacts = [
       >
         <section class="max-w-xl" aria-labelledby="about-name">
           <p
-            class="mb-4 text-sm font-[500] uppercase tracking-[0.2em] text-slate-100/55"
+            class="mb-4 text-sm font-[500] uppercase tracking-[0.2em]"
           >
             About
           </p>
           <Title
             id="about-name"
-            class="text-4xl leading-[1.1] text-slate-100 sm:text-5xl md:text-6xl"
+            class="text-4xl leading-[1.1] sm:text-5xl md:text-6xl"
           >
             Erland Gustavson Påsse
           </Title>
 
           <ul
-            class="mt-8 flex flex-col gap-2 text-lg text-slate-100/85 sm:text-xl"
+            class="mt-8 flex flex-col gap-2 text-lg sm:text-xl"
             aria-label="Roles"
           >
             {
@@ -54,7 +54,7 @@ const contacts = [
           </ul>
 
           <p
-            class="mt-10 max-w-md text-base leading-relaxed text-slate-100/70 sm:text-lg"
+            class="mt-10 max-w-md text-base leading-relaxed sm:text-lg"
           >
             Malmö-based. Interested in ecology and birds. And many other things.
           </p>
@@ -66,11 +66,11 @@ const contacts = [
         >
           <h2
             id="contact-heading"
-            class="text-sm font-[500] uppercase tracking-[0.2em] text-slate-100/55"
+            class="text-sm font-[500] uppercase tracking-[0.2em]"
           >
             Contact
           </h2>
-          <p class="mt-4 text-2xl font-[500] leading-snug text-slate-100 sm:text-3xl">
+          <p class="mt-4 text-2xl font-[500] leading-snug sm:text-3xl">
             Don’t hesitate to reach out!
           </p>
 
@@ -80,10 +80,10 @@ const contacts = [
                 <li>
                   <a
                     href={contact.href}
-                    class="group inline-flex items-center gap-3 text-slate-100/85 transition-colors duration-300"
+                    class="group inline-flex items-center gap-1.5 transition-colors duration-300"
                   >
                     <i
-                      class:list={["ph", contact.icon, "text-xl text-slate-100/50"]}
+                      class:list={["ph", contact.icon, "text-xl opacity-70"]}
                       aria-hidden="true"
                     />
                     <span

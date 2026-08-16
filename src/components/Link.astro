@@ -5,33 +5,18 @@ type Props = {
   src: string;
   text: string;
   icon: string;
-  variant?: "default" | "nav";
 };
 
-const { src, text, icon, variant = "default" } = Astro.props as Props;
+const { src, text, icon } = Astro.props as Props;
 
 const href = src.startsWith("http") ? src : withBase(src);
 ---
 
 <a
   href={href}
-  class:list={[
-    "group relative z-10 inline-flex items-center transition-colors duration-300 ease-in-out",
-    variant === "nav"
-      ? "gap-3 px-4 py-3 text-xl font-[500] tracking-wide text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] hover:opacity-85 md:gap-3.5 md:px-5 md:py-3.5 md:text-2xl lg:text-[1.75rem]"
-      : "gap-2 p-2 text-lg text-slate-100",
-  ]}
+  class="group inline-flex items-center gap-1 p-2 text-lg transition-colors duration-300 ease-in-out"
 >
-  <i
-    class:list={[
-      "ph",
-      icon,
-      variant === "nav"
-        ? "text-[1.15em] opacity-80 md:text-[1.2em]"
-        : "text-xl opacity-70",
-    ]}
-    aria-hidden="true"
-  ></i>
+  <i class:list={["ph", icon, "text-xl opacity-70"]} aria-hidden="true"></i>
   <span
     class="underline decoration-transparent decoration-1 underline-offset-[0.35em] transition-[text-decoration-color] duration-300 group-hover:decoration-current"
   >

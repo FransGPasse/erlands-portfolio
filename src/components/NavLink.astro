@@ -1,0 +1,56 @@
+---
+import { withBase } from "../lib/withBase";
+
+type Props = {
+  href: string;
+  label: string;
+  icon: string;
+  layout: "desktop" | "mobile";
+  index?: number;
+};
+
+const { href, label, icon, layout, index = 0 } = Astro.props as Props;
+
+const resolvedHref = href.startsWith("http") ? href : withBase(href);
+
+const menuItemDelays = [
+  "[animation-delay:0.12s]",
+  "[animation-delay:0.2s]",
+  "[animation-delay:0.28s]",
+];
+---
+
+{
+  layout === "mobile" ? (
+    <li
+      class:list={[
+        "pointer-events-none opacity-0 group-[.is-open]/menu:pointer-events-auto group-[.is-open]/menu:animate-menu-item-in motion-reduce:group-[.is-open]/menu:animate-none motion-reduce:group-[.is-open]/menu:opacity-100",
+        menuItemDelays[index] ?? "[animation-delay:0.28s]",
+      ]}
+    >
+      <a
+        href={resolvedHref}
+        data-nav-item
+        class="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 px-6 py-3 text-center text-3xl font-[500] tracking-wide transition-opacity duration-300 hover:opacity-80 sm:py-4 sm:text-4xl"
+      >
+        <i
+          class:list={["ph", icon, "text-[0.9em] opacity-70"]}
+          aria-hidden="true"
+        />
+        <span data-nav-label>{label}</span>
+      </a>
+    </li>
+  ) : (
+    <a
+      href={resolvedHref}
+      data-nav-item
+      class="inline-flex items-center gap-1.5 px-4 py-3 text-xl font-[500] tracking-wide drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] md:px-5 md:py-3.5 md:text-2xl lg:text-[1.75rem]"
+    >
+      <i
+        class:list={["ph", icon, "text-[1.15em] opacity-80 md:text-[1.2em]"]}
+        aria-hidden="true"
+      />
+      <span data-nav-label>{label}</span>
+    </a>
+  )
+}
