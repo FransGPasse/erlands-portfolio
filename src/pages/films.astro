@@ -1,19 +1,26 @@
 ---
 import PageHeader from "../components/PageHeader.astro";
 import Layout from "../layouts/Layout.astro";
+import Link from "../components/Link.astro";
 ---
 
 <Layout>
-  <div class="h-full flex flex-col items-center justify-center">
-    <PageHeader text="Filmer" />
-    <iframe
-      width="560"
-      height="315"
-      src="https://www.youtube.com/embed/cpp8qazFSZA?si=yIBQUPNXh6iqMi3k"
-      title="YouTube video player"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen></iframe>
+  <div class="relative z-10 min-h-dvh overflow-y-auto">
+    <div class="mx-auto flex min-h-dvh w-full max-w-5xl flex-col items-center px-6 py-10 sm:px-10 sm:py-14 md:py-16">
+      <div class="mb-12 w-full md:mb-16">
+        <Link src="/" text="Home" icon="ph-house" />
+      </div>
+
+      <PageHeader text="Films" />
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/cpp8qazFSZA?si=yIBQUPNXh6iqMi3k"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>
+    </div>
   </div>
 </Layout>

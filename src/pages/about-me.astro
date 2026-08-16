@@ -1,11 +1,103 @@
 ---
-import PageHeader from "../components/PageHeader.astro";
 import Layout from "../layouts/Layout.astro";
+import Link from "../components/Link.astro";
+
+const roles = ["Director & editor", "Short docs", "Music vids"];
+
+const contacts = [
+  {
+    href: "mailto:erland.passe@gmail.com",
+    label: "erland.passe@gmail.com",
+    icon: "ph-envelope-simple",
+  },
+  {
+    href: "tel:+46721799117",
+    label: "072-179 91 17",
+    icon: "ph-phone",
+  },
+  {
+    href: "tel:+46721799117",
+    label: "+46 72 179 91 17",
+    icon: "ph-globe-hemisphere-west",
+  },
+];
 ---
 
 <Layout>
-  <div class="h-full flex flex-col items-center justify-center">
-    <PageHeader text="Om mig" />
-    Hej jag heter Erland
+  <div class="relative z-10 min-h-dvh overflow-y-auto">
+    <div class="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-6 py-10 sm:px-10 sm:py-14 md:py-16">
+      <div class="mb-12 md:mb-16">
+        <Link src="/" text="Home" icon="ph-house" />
+      </div>
+
+      <div
+        class="flex flex-1 flex-col justify-between gap-16 lg:grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end lg:gap-20"
+      >
+        <section class="max-w-xl" aria-labelledby="about-name">
+          <p
+            class="mb-4 text-sm font-[500] uppercase tracking-[0.2em] text-slate-100/55"
+          >
+            About
+          </p>
+          <h1
+            id="about-name"
+            class="text-4xl font-[500] leading-[1.1] text-slate-100 sm:text-5xl md:text-6xl"
+          >
+            Erland Gustavson Påsse
+          </h1>
+
+          <ul
+            class="mt-8 flex flex-col gap-2 text-lg text-slate-100/85 sm:text-xl"
+            aria-label="Roles"
+          >
+            {
+              roles.map((role) => (
+                <li class="border-l border-white/25 pl-4">{role}</li>
+              ))
+            }
+          </ul>
+
+          <p
+            class="mt-10 max-w-md text-base leading-relaxed text-slate-100/70 sm:text-lg"
+          >
+            Malmö-based. Interested in ecology and birds. And many other things.
+          </p>
+        </section>
+
+        <section
+          class="border-t border-white/15 pt-10 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0"
+          aria-labelledby="contact-heading"
+        >
+          <h2
+            id="contact-heading"
+            class="text-sm font-[500] uppercase tracking-[0.2em] text-slate-100/55"
+          >
+            Contact
+          </h2>
+          <p class="mt-4 text-2xl font-[500] leading-snug text-slate-100 sm:text-3xl">
+            Don’t hesitate to reach out!
+          </p>
+
+          <ul class="mt-8 flex flex-col gap-4">
+            {
+              contacts.map((contact) => (
+                <li>
+                  <a
+                    href={contact.href}
+                    class="group inline-flex items-center gap-3 text-slate-100/85 transition-opacity duration-300 hover:opacity-70"
+                  >
+                    <i
+                      class:list={["ph", contact.icon, "text-xl text-slate-100/50"]}
+                      aria-hidden="true"
+                    />
+                    <span class="text-base sm:text-lg">{contact.label}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
+    </div>
   </div>
 </Layout>

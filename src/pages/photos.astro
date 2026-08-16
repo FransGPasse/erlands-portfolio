@@ -1,6 +1,7 @@
 ---
 import PageHeader from "../components/PageHeader.astro";
 import Layout from "../layouts/Layout.astro";
+import Link from "../components/Link.astro";
 import { photos } from "../data/photos";
 
 const bentoSpans = [
@@ -21,20 +22,24 @@ const bentoSpans = [
 
 <Layout>
   <div class="relative z-10 min-h-screen overflow-y-auto">
-    <div class="flex flex-col items-center px-6 py-10 gap-6">
-      <PageHeader text="Foto" />
+    <div class="flex flex-col items-center px-6 py-10 gap-6 sm:px-10 sm:py-14 md:py-16">
+      <div class="mb-6 w-full max-w-6xl md:mb-10">
+        <Link src="/" text="Home" icon="ph-house" />
+      </div>
+
+      <PageHeader text="Photos" />
 
       <div
         class="flex gap-1"
         role="group"
-        aria-label="Visa som"
+        aria-label="View as"
       >
         <button
           type="button"
           data-view-btn="bento"
           aria-pressed="true"
-          aria-label="Bento"
-          title="Bento"
+          aria-label="Bento grid"
+          title="Bento grid"
           class="view-btn text-slate-100 transition-all duration-300 ease-in-out p-2 text-2xl"
         >
           <i class="ph ph-squares-four" aria-hidden="true"></i>
@@ -43,8 +48,8 @@ const bentoSpans = [
           type="button"
           data-view-btn="carousel"
           aria-pressed="false"
-          aria-label="Karusell"
-          title="Karusell"
+          aria-label="Carousel"
+          title="Carousel"
           class="view-btn text-slate-100/60 transition-all duration-300 ease-in-out p-2 text-2xl aria-pressed:text-slate-100"
         >
           <i class="ph ph-slideshow" aria-hidden="true"></i>
@@ -98,7 +103,7 @@ const bentoSpans = [
               type="button"
               id="carousel-prev"
               class="text-slate-100 text-2xl p-2 transition-opacity duration-300 hover:opacity-70"
-              aria-label="Föregående foto"
+              aria-label="Previous photo"
             >
               <i class="ph ph-caret-left" aria-hidden="true"></i>
             </button>
@@ -112,7 +117,7 @@ const bentoSpans = [
               type="button"
               id="carousel-next"
               class="text-slate-100 text-2xl p-2 transition-opacity duration-300 hover:opacity-70"
-              aria-label="Nästa foto"
+              aria-label="Next photo"
             >
               <i class="ph ph-caret-right" aria-hidden="true"></i>
             </button>

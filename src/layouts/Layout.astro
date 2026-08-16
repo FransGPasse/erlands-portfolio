@@ -14,9 +14,7 @@ const faviconHref = withBase("favicon.svg");
     <meta name="generator" content={Astro.generator} />
     <title>Erland Gustavson Påsse</title>
   </head>
-  <body
-    class="min-h-screen bg-gradient-to-br from-slate-400 to-stone-500 before:content-[''] before:fixed before:inset-[-100px] before:bg-[radial-gradient(circle,rgba(255,255,255,0.3)_1px,transparent_1px)] before:bg-[length:60px_60px] before:animate-[move_8s_ease-in-out_infinite_alternate] before:-z-10"
-  >
+  <body class="min-h-screen bg-neutral-950">
     <div
       id="cursor"
       class="pointer-events-none fixed left-0 top-0 z-[9999] size-3 rounded-full bg-white/75 opacity-0 mix-blend-difference transition-[left,top,opacity,transform] duration-100 ease-out"
@@ -93,15 +91,6 @@ const faviconHref = withBase("favicon.svg");
     *::before,
     *::after {
       cursor: none !important;
-    }
-
-    @keyframes move {
-      from {
-        transform: translate(0, 0);
-      }
-      to {
-        transform: translate(-40px, -40px);
-      }
     }
   </style>
 </html>
