@@ -10,12 +10,12 @@ const menuId = "site-menu";
 
 <div
   id={menuId}
-  class="group/menu pointer-events-none fixed inset-0 z-40 md:hidden [[&.is-open]]:pointer-events-auto"
+  class="mobile-menu group/menu fixed inset-0 z-40 md:hidden"
   hidden
   aria-hidden="true"
 >
   <nav
-    class="flex size-full scale-[0.98] items-center justify-center bg-neutral-950 opacity-0 transition-[opacity,transform] duration-400 ease-smooth motion-reduce:scale-100 motion-reduce:transition-none group-[.is-open]/menu:scale-100 group-[.is-open]/menu:opacity-100"
+    class="mobile-menu__nav flex size-full scale-[0.98] items-center justify-center bg-neutral-950 opacity-0 transition-[opacity,transform] duration-400 ease-smooth motion-reduce:scale-100 motion-reduce:transition-none group-[.is-open]/menu:scale-100 group-[.is-open]/menu:opacity-100"
     aria-label="Main menu"
   >
     <ul class="flex flex-col items-center gap-2 sm:gap-3">
@@ -32,6 +32,20 @@ const menuId = "site-menu";
     </ul>
   </nav>
 </div>
+
+<style>
+  .mobile-menu {
+    pointer-events: none;
+  }
+
+  .mobile-menu.is-open {
+    pointer-events: auto;
+  }
+
+  .mobile-menu__nav {
+    touch-action: manipulation;
+  }
+</style>
 
 <script>
   const toggle = document.getElementById("menu-toggle");
@@ -77,10 +91,6 @@ const menuId = "site-menu";
     toggle.addEventListener("click", (event) => {
       event.stopPropagation();
       setOpen(!isOpen);
-    });
-
-    menu.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => setOpen(false));
     });
 
     document.addEventListener("keydown", (event) => {

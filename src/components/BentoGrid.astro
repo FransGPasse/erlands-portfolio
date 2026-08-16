@@ -58,6 +58,7 @@ const bentoSpans = [
   .bento-item {
     opacity: 0;
     transform: translateY(2rem);
+    pointer-events: none;
     transition:
       opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1),
       transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
@@ -67,12 +68,14 @@ const bentoSpans = [
   .bento-item.is-visible {
     opacity: 1;
     transform: translateY(0);
+    pointer-events: auto;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .bento-item {
       opacity: 1;
       transform: none;
+      pointer-events: auto;
       transition: none;
     }
   }

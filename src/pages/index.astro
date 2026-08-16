@@ -27,12 +27,12 @@ const heroSrc = withBase("photos/landing-page-image.webp");
     </header>
 
     <nav
-      class="absolute bottom-8 right-8 z-30 hidden md:bottom-10 md:right-10 md:flex md:flex-wrap md:justify-end md:gap-1"
+      class="absolute bottom-8 right-8 z-30 hidden md:bottom-10 md:right-10 md:flex md:flex-wrap md:items-center md:justify-end md:gap-2 lg:bottom-12 lg:right-12 lg:gap-3"
       aria-label="Main menu"
     >
       {
         navLinks.map((link) => (
-          <Link src={link.href} text={link.label} icon={link.icon} />
+          <Link src={link.href} text={link.label} icon={link.icon} variant="nav" />
         ))
       }
     </nav>

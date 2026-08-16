@@ -1,20 +1,28 @@
+@import "@phosphor-icons/web/regular";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Outfit path is set on <html> via --font-outfit (see Layout.astro). */
-@font-face {
-  font-family: "Outfit";
-  src: var(--font-outfit) format("truetype");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 @layer base {
-  *,
-  *::before,
-  *::after {
-    cursor: none !important;
+  a,
+  button,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  .ph {
+    display: inline-block;
+    width: 1em;
+    text-align: center;
+    vertical-align: -0.125em;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    *,
+    *::before,
+    *::after {
+      cursor: none !important;
+    }
   }
 }
