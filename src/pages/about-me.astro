@@ -12,13 +12,8 @@ const contacts = [
   },
   {
     href: "tel:+46721799117",
-    label: "072-179 91 17",
-    icon: "ph-phone",
-  },
-  {
-    href: "tel:+46721799117",
     label: "+46 72 179 91 17",
-    icon: "ph-globe-hemisphere-west",
+    icon: "ph-phone",
   },
 ];
 ---
@@ -41,7 +36,7 @@ const contacts = [
           </p>
           <h1
             id="about-name"
-            class="text-4xl font-[500] leading-[1.1] text-slate-100 sm:text-5xl md:text-6xl"
+            class="title-weight text-4xl leading-[1.1] text-slate-100 sm:text-5xl md:text-6xl"
           >
             Erland Gustavson Påsse
           </h1>
@@ -84,13 +79,17 @@ const contacts = [
                 <li>
                   <a
                     href={contact.href}
-                    class="group inline-flex items-center gap-3 text-slate-100/85 transition-opacity duration-300 hover:opacity-70"
+                    class="group inline-flex items-center gap-3 text-slate-100/85 transition-colors duration-300"
                   >
                     <i
                       class:list={["ph", contact.icon, "text-xl text-slate-100/50"]}
                       aria-hidden="true"
                     />
-                    <span class="text-base sm:text-lg">{contact.label}</span>
+                    <span
+                      class="text-base underline decoration-transparent decoration-1 underline-offset-[0.35em] transition-[text-decoration-color] duration-300 group-hover:decoration-current sm:text-lg"
+                    >
+                      {contact.label}
+                    </span>
                   </a>
                 </li>
               ))

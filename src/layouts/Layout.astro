@@ -92,5 +92,15 @@ const faviconHref = withBase("favicon.svg");
     *::after {
       cursor: none !important;
     }
+
+    /* Smooth variable-font weight hover (Outfit wght axis). */
+    .title-weight {
+      font-variation-settings: "wght" 500;
+      transition: font-variation-settings 300ms ease;
+    }
+
+    .title-weight:hover {
+      font-variation-settings: "wght" 800;
+    }
   </style>
 </html>
