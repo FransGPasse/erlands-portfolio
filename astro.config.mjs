@@ -5,8 +5,8 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://erlandsfoto.se',
-  base: '/',
+  site: 'https://fransgpasse.github.io',
+  base: '/erlands-portfolio',
   trailingSlash: 'always',
   integrations: [tailwind()]
 });
