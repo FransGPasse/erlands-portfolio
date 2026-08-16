@@ -1,0 +1,186 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import Layout from "../layouts/Layout.astro";
+import { photos } from "../data/photos";
+
+const bentoSpans = [
+  "col-span-2 row-span-2",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-2",
+  "col-span-1 row-span-1",
+  "col-span-2 row-span-1",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-1",
+  "col-span-2 row-span-2",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-2",
+  "col-span-1 row-span-1",
+];
+---
+
+<Layout>
+  <div class="relative z-10 min-h-screen overflow-y-auto">
+    <div class="flex flex-col items-center px-6 py-10 gap-6">
+      <PageHeader text="Foto" />
+
+      <div
+        class="flex gap-2"
+        role="group"
+        aria-label="Visa som"
+      >
+        <button
+          type="button"
+          data-view-btn="bento"
+          aria-pressed="true"
+          class="view-btn text-slate-100 transition-all duration-300 ease-in-out p-2 text-lg font-[500] aria-pressed:font-[800]"
+        >
+          Bento
+        </button>
+        <button
+          type="button"
+          data-view-btn="carousel"
+          aria-pressed="false"
+          class="view-btn text-slate-100/60 transition-all duration-300 ease-in-out p-2 text-lg font-[500] aria-pressed:font-[800] aria-pressed:text-slate-100"
+        >
+          Karusell
+        </button>
+      </div>
+
+      <div
+        id="bento-view"
+        class="w-full max-w-6xl grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] md:auto-rows-[160px] gap-3"
+      >
+        {
+          photos.map((photo, index) => (
+            <figure
+              class:list={[
+                bentoSpans[index % bentoSpans.length],
+                "overflow-hidden group",
+              ]}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                class="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                loading="lazy"
+              />
+            </figure>
+          ))
+        }
+      </div>
+
+      <div id="carousel-view" class="hidden w-full max-w-5xl" hidden>
+        <div class="relative flex flex-col items-center gap-4">
+          <div class="relative w-full aspect-[3/2] overflow-hidden">
+            {
+              photos.map((photo, index) => (
+                <img
+                  data-carousel-slide
+                  src={photo.src}
+                  alt={photo.alt}
+                  class:list={[
+                    "absolute inset-0 size-full object-cover transition-opacity duration-500",
+                    index === 0 ? "opacity-100" : "opacity-0 pointer-events-none",
+                  ]}
+                  loading={index === 0 ? "eager" : "lazy"}
+                />
+              ))
+            }
+          </div>
+
+          <div class="flex items-center gap-6">
+            <button
+              type="button"
+              id="carousel-prev"
+              class="text-slate-100 text-lg p-2 transition-opacity duration-300 hover:opacity-70"
+              aria-label="Föregående foto"
+            >
+              ←
+            </button>
+            <p
+              id="carousel-counter"
+              class="text-slate-100/80 text-sm tabular-nums min-w-[4.5rem] text-center"
+            >
+              1 / {photos.length}
+            </p>
+            <button
+              type="button"
+              id="carousel-next"
+              class="text-slate-100 text-lg p-2 transition-opacity duration-300 hover:opacity-70"
+              aria-label="Nästa foto"
+            >
+              →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const viewButtons = document.querySelectorAll<HTMLButtonElement>("[data-view-btn]");
+  const bentoView = document.getElementById("bento-view");
+  const carouselView = document.getElementById("carousel-view");
+  const slides = document.querySelectorAll<HTMLImageElement>("[data-carousel-slide]");
+  const counter = document.getElementById("carousel-counter");
+  const prevBtn = document.getElementById("carousel-prev");
+  const nextBtn = document.getElementById("carousel-next");
+
+  let activeIndex = 0;
+  let currentView: "bento" | "carousel" = "bento";
+
+  function setView(view: "bento" | "carousel") {
+    currentView = view;
+
+    viewButtons.forEach((btn) => {
+      const isActive = btn.dataset.viewBtn === view;
+      btn.setAttribute("aria-pressed", String(isActive));
+      btn.classList.toggle("text-slate-100", isActive);
+      btn.classList.toggle("text-slate-100/60", !isActive);
+    });
+
+    if (!bentoView || !carouselView) return;
+
+    const showBento = view === "bento";
+    bentoView.classList.toggle("hidden", !showBento);
+    carouselView.classList.toggle("hidden", showBento);
+    carouselView.hidden = showBento;
+  }
+
+  function showSlide(index: number) {
+    if (slides.length === 0) return;
+
+    activeIndex = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, i) => {
+      const isActive = i === activeIndex;
+      slide.classList.toggle("opacity-100", isActive);
+      slide.classList.toggle("opacity-0", !isActive);
+      slide.classList.toggle("pointer-events-none", !isActive);
+    });
+
+    if (counter) {
+      counter.textContent = `${activeIndex + 1} / ${slides.length}`;
+    }
+  }
+
+  viewButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const view = btn.dataset.viewBtn;
+      if (view === "bento" || view === "carousel") {
+        setView(view);
+      }
+    });
+  });
+
+  prevBtn?.addEventListener("click", () => showSlide(activeIndex - 1));
+  nextBtn?.addEventListener("click", () => showSlide(activeIndex + 1));
+
+  document.addEventListener("keydown", (event) => {
+    if (currentView !== "carousel") return;
+    if (event.key === "ArrowLeft") showSlide(activeIndex - 1);
+    if (event.key === "ArrowRight") showSlide(activeIndex + 1);
+  });
+</script>
