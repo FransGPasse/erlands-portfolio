@@ -7,5 +7,6 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   site: 'https://fransgpasse.github.io',
   base: '/erlands-portfolio',
+  trailingSlash: 'always',
   integrations: [tailwind()]
 });

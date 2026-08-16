@@ -1,10 +1,10 @@
 ---
+import { withBase } from "../lib/withBase";
+
 const props = Astro.props;
 const { src, text } = props;
 
-const href = src.startsWith("http")
-  ? src
-  : `${import.meta.env.BASE_URL}${src.replace(/^\//, "")}`;
+const href = src.startsWith("http") ? src : withBase(src);
 ---
 
 <a

@@ -1,15 +1,16 @@
 ---
 import "@phosphor-icons/web/regular";
+import { withBase } from "../lib/withBase";
 
-const base = import.meta.env.BASE_URL;
-const outfitFont = `url(${base}fonts/Outfit-VariableFont_wght.ttf)`;
+const outfitFont = `url(${withBase("fonts/Outfit-VariableFont_wght.ttf")})`;
+const faviconHref = withBase("favicon.svg");
 ---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={faviconHref} />
     <meta name="generator" content={Astro.generator} />
     <title>Erland Gustavson Påsse</title>
   </head>

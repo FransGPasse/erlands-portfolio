@@ -1,3 +1,5 @@
+import { withBase } from "../lib/withBase";
+
 export type Photo = {
   id: string;
   src: string;
@@ -9,7 +11,7 @@ export const photos: Photo[] = Array.from({ length: 48 }, (_, index) => {
   const n = String(index + 1).padStart(2, "0");
   return {
     id: n,
-    src: `${import.meta.env.BASE_URL}photos/photo-${n}.webp`,
+    src: withBase(`photos/photo-${n}.webp`),
     alt: `Foto ${index + 1}`,
   };
 });
