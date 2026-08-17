@@ -4,20 +4,17 @@ import MainNav from "../components/MainNav.astro";
 import Title from "../components/Title.astro";
 import { withBase } from "../lib/withBase";
 
-const heroSrc = withBase("movies/erland_moln.webm");
+const heroSrc = withBase("photos/landing-page-image.webp");
 ---
 
 <Layout>
   <main class="relative min-h-dvh overflow-hidden">
-    <video
+    <img
       src={heroSrc}
-      autoplay
-      muted
-      loop
-      playsinline
-      aria-hidden="true"
+      alt="Photo 32"
       class="absolute inset-0 z-0 size-full object-cover object-center opacity-0 animate-hero-blur-fade motion-reduce:animate-none motion-reduce:opacity-100 motion-reduce:blur-none motion-reduce:scale-100"
-    ></video>
+      fetchpriority="high"
+    />
 
     <header class="absolute inset-x-0 top-0 z-chrome p-5 sm:p-8 md:p-10">
       <Title
